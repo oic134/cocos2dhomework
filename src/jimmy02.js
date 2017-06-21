@@ -1,41 +1,36 @@
 var jimmy02Layer = cc.Layer.extend({
-    n0:null,
     ctor: function(){
         this._super();
         var size = cc.winSize;
+        //做出一個線框出來
+        var colorLayer = new cc.LayerColor(
+            // 顏色             寬 高
+            cc.color(255,255,0), 240,55
+        );
+        colorLayer.x = size.width/2;
+        colorLayer.y = size.height/2+290;
+        colorLayer.ignoreAnchorPointForPosition(false); //預設座標轉換
+        this.addChild(colorLayer,0);
+        //輸入文字
+        var myLabel =  new cc.LabelTTF("我的遊戲","Arial",48
+            // ,cc.size(192,55),
+            // cc.TEXT_ALIGNMENT_CENTER, 文字置中
+            // cc.VERTICAL_TEXT_ALIGNMENT_CENTER 垂直置中
+        );
+
+        var labelSize =  myLabel.getContentSize(); //知道內容空間大小(寬高)
+        cc.log(labelSize);
+        myLabel.x = size.width/2;
+        myLabel.y = size.height/2+290 ;
+        myLabel.setColor(cc.color(0,0,255)); //變更顏色
+        myLabel.setString("猜數字遊戲");  //可事後更改內容
+
+        this.addChild(myLabel,0);
 
 
+        // this.addChild(colorLayer,0); if都是0,0則按順序疊上去
+        // this.addChild(myLabel,0); 如果都不是則按數字大小 數字越大則疊越上面
         return true;
-    },
-    //元件初始化
-    initSprite: function(){
-
-    },
-    myMouseListener:function(layer){
-        if("mouse" in cc.sys.capabilities){
-            console.log("mouse ok");
-            var mouseListener = {
-                event: cc.EventListener.MOUSE,
-                onMouseDown:function(event){
-                    var x = event.getLocationX();
-                    var y = event.getLocationY();
-                    var point = new cc.Point(x,y);
-
-                    var n0X = layer.n0.x;
-                    var n0Y = layer.n0.y;
-                    var n0W = layer.n0.width;
-                    var n0H = layer.n0.height;
-                    var rect = new cc.Rect(n0X,n0Y,n0W,n0H);
-                    if(cc.rectContainsPoint(rect,point)){
-                        console.log("got it2")
-                    }
-
-                }
-
-
-            };
-            cc.eventManager.addListener(mouseListener,this);
-        }
     },
 });
 
@@ -46,7 +41,3 @@ var jimmy02Scene = cc.Scene.extend({
         this.addChild(layer);
     }
 });
-
-function sayYa(who){
-    return "Ya,"+who;
-};
